@@ -129,7 +129,7 @@ const actionButtonStyle = {
   color: "#111",
   border: "none",
   borderRadius: "999px",
-  padding: "12px 28px",
+  padding: "16px 32px",
   fontWeight: 900,
   fontSize: "1.125rem",
   cursor: "pointer",
