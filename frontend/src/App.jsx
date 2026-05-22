@@ -185,6 +185,11 @@ export default function App() {
 
   /** Called by UploadForm after a successful API response. */
   const handleSubmitResult = (data) => {
+    if (!data) {
+      setResult(null);
+      return;
+    }
+
     setResult(data);
     setSlideState("summary");
     setView("result");
