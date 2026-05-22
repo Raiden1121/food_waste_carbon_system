@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { detectWaste } from "../api/wasteApi";
 import { IconUpload, IconCamera, IconTrash, IconArrowRight } from "./Icons";
+import Button from "./Button";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 
@@ -329,22 +330,22 @@ export default function UploadForm({
           <p style={sectionTitleStyle}>Step1</p>
           <p style={sectionSubStyle}>請選擇輸入餐盤圖片的方式。</p>
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <button
+            <Button
               id="btn-mode-upload"
               type="button"
               style={pillButtonStyle(inputMode === "upload")}
               onClick={() => handleModeSwitch("upload")}
             >
               上傳照片
-            </button>
-            <button
+            </Button>
+            <Button
               id="btn-mode-camera"
               type="button"
               style={pillButtonStyle(inputMode === "camera")}
               onClick={() => handleModeSwitch("camera")}
             >
               直接拍照
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -461,7 +462,7 @@ export default function UploadForm({
           )}
         </div>
 
-        <button
+        <Button
           id="btn-submit"
           type="submit"
           disabled={loading}
@@ -469,7 +470,7 @@ export default function UploadForm({
         >
           開始分析
           <IconArrowRight />
-        </button>
+        </Button>
       </div>
 
       <canvas ref={canvasRef} style={{ display: "none" }} />
@@ -485,14 +486,14 @@ function UploadModeActionButton({ file, onChange }) {
 
   return (
     <>
-      <button
+      <Button
         id="btn-choose-file"
         type="button"
         style={actionButtonStyle("primary")}
         onClick={() => fileInputRef.current?.click()}
       >
         <IconUpload /> {label}
-      </button>
+      </Button>
       <input
         ref={fileInputRef}
         type="file"
@@ -507,15 +508,15 @@ function UploadModeActionButton({ file, onChange }) {
 function CameraModeActionButtonFixed({ phase, cameraStarting, cameraReady, onStart, onCapture, onDiscard }) {
   if (phase === "idle") {
     return (
-      <button id="btn-open-camera" type="button" style={actionButtonStyle("primary")} onClick={onStart}>
+      <Button id="btn-open-camera" type="button" style={actionButtonStyle("primary")} onClick={onStart}>
         <IconCamera /> {cameraStarting ? "啟動相機中..." : "開啟相機"}
-      </button>
+      </Button>
     );
   }
 
   if (phase === "live") {
     return (
-      <button
+      <Button
         id="btn-capture"
         type="button"
         style={{
@@ -527,18 +528,18 @@ function CameraModeActionButtonFixed({ phase, cameraStarting, cameraReady, onSta
         disabled={!cameraReady}
       >
         <IconCamera /> 拍照並使用
-      </button>
+      </Button>
     );
   }
 
   return (
     <div style={{ display: "flex", gap: "12px" }}>
-      <button id="btn-discard" type="button" style={actionButtonStyle("danger")} onClick={onDiscard}>
+      <Button id="btn-discard" type="button" style={actionButtonStyle("danger")} onClick={onDiscard}>
         <IconTrash /> 捨棄
-      </button>
-      <button id="btn-retake" type="button" style={actionButtonStyle("primary")} onClick={onStart}>
+      </Button>
+      <Button id="btn-retake" type="button" style={actionButtonStyle("primary")} onClick={onStart}>
         <IconCamera /> 重新拍照
-      </button>
+      </Button>
     </div>
   );
 }

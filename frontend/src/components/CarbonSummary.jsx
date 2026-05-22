@@ -1,6 +1,8 @@
 // Summary card for View B — Exact layout matching design 5.png.
 
+import React from "react";
 import { IconSearch, IconArrowRight } from "./Icons";
+import Button from "./Button";
 
 const GREEN = "#b3d85a"; // Matching the bright green
 const TEXT_DARK = "#111827";
@@ -149,12 +151,12 @@ export default function CarbonSummary({ result, onAnalyseOther, onViewDetail }) 
 
       {/* Action buttons */}
       <div style={{ display: "flex", justifyContent: "flex-end", gap: "16px", flexWrap: "wrap", marginTop: "16px" }}>
-        <button id="btn-analyse-other" type="button" onClick={onAnalyseOther} style={actionButtonStyle}>
+        <Button id="btn-analyse-other" type="button" onClick={onAnalyseOther} style={actionButtonStyle}>
           <IconSearch /> 分析其它廚餘
-        </button>
-        <button id="btn-view-detail" type="button" onClick={onViewDetail} style={actionButtonStyle}>
+        </Button>
+        <Button id="btn-view-detail" type="button" onClick={onViewDetail} style={actionButtonStyle}>
           查看詳細分析結果 <IconArrowRight />
-        </button>
+        </Button>
       </div>
     </div>
   );

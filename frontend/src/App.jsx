@@ -7,6 +7,7 @@ import CarbonSummary from "./components/CarbonSummary";
 import ImagePreview from "./components/ImagePreview";
 import ResultTable from "./components/ResultTable";
 import { IconArrowLeft } from "./components/Icons";
+import Button from "./components/Button";
 
 // ─── Global keyframe injection ───────────────────────────────────────────────
 
@@ -64,6 +65,24 @@ const globalStyles = `
   /* Detail visible, summary hidden to the left */
   .slide-detail .result-panel--summary { transform: translateX(-100%); }
   .slide-detail .result-panel--detail  { transform: translateX(0); }
+
+  /* Ripple Effect */
+  .ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple-animation 0.6s ease-out forwards;
+    background-color: rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes ripple-animation {
+    to {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0;
+    }
+  }
 `;
 
 // ─── Loading overlay ──────────────────────────────────────────────────────────
@@ -361,7 +380,7 @@ function DetailView({ result, onBack }) {
     <div style={{ display: "grid", gap: "28px" }}>
       {/* Back button */}
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <button
+        <Button
           id="btn-back-to-summary"
           onClick={onBack}
           style={{
@@ -381,7 +400,7 @@ function DetailView({ result, onBack }) {
         >
           <IconArrowLeft />
           返回前頁
-        </button>
+        </Button>
       </div>
 
       {/* Detection images */}
