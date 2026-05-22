@@ -245,7 +245,7 @@ export default function CarbonSummary({ result, onAnalyseOther, onViewDetail }) 
       </div>
 
       {/* Action buttons */}
-      <div ref={bottomRef} style={{ display: "flex", justifyContent: "flex-end", gap: "16px", flexWrap: "wrap", marginTop: "16px" }}>
+      <div ref={bottomRef} style={{ display: "flex", justifyContent: "flex-end", gap: "32px", flexWrap: "wrap" }}>
         <Button id="btn-analyse-other" type="button" onClick={() => setTimeout(onAnalyseOther, 250)} style={actionButtonStyle}>
           <IconSearch /> 分析其它廚餘
         </Button>
