@@ -282,6 +282,9 @@ export default function UploadForm({
     setInputMode(mode);
     stopCamera();
     setCameraPhase("idle");
+    // NOTE: 切換模式時清除已選取/拍攝的圖片，避免舊圖片殘留
+    setFile(null);
+    setFileTouched(false);
   };
 
   const handleVideoReady = () => {
@@ -545,15 +548,11 @@ function CameraModeActionButtonFixed({ phase, cameraStarting, cameraReady, onSta
     );
   }
 
+  // NOTE: captured 階段只保留「重新拍照」，不顯示「捨棄」按鈕
   return (
-    <div style={{ display: "flex", gap: "12px" }}>
-      <Button id="btn-discard" type="button" style={actionButtonStyle("danger")} onClick={onDiscard}>
-        <IconTrash /> 捨棄
-      </Button>
-      <Button id="btn-retake" type="button" style={actionButtonStyle("primary")} onClick={onStart}>
-        <IconCamera /> 重新拍照
-      </Button>
-    </div>
+    <Button id="btn-retake" type="button" style={actionButtonStyle("primary")} onClick={onStart}>
+      <IconCamera /> 重新拍照
+    </Button>
   );
 }
 

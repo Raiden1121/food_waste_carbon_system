@@ -19,18 +19,22 @@ const CountUpNumber = ({ value, decimals = 0, suffix = "" }) => {
       return;
     }
     let start = null;
-    const duration = 1500; // 1.5 seconds
+    const duration = 2000; // 2 seconds to make the slow-down more noticeable
 
     const step = (timestamp) => {
       if (!start) start = timestamp;
       const progress = timestamp - start;
       const percentage = Math.min(progress / duration, 1);
-      const easePercentage = percentage === 1 ? 1 : 1 - Math.pow(2, -10 * percentage);
+      
+      // easeOutQuart function: fast start, smooth and noticeable slow down
+      const easePercentage = 1 - Math.pow(1 - percentage, 4);
       
       setCurrent(target * easePercentage);
       
       if (percentage < 1) {
         window.requestAnimationFrame(step);
+      } else {
+        setCurrent(target); // Ensure exact final value
       }
     };
     
@@ -125,7 +129,7 @@ const actionButtonStyle = {
   color: "#111",
   border: "none",
   borderRadius: "999px",
-  padding: "12px 28px",
+  padding: "16px 32px",
   fontWeight: 900,
   fontSize: "1.125rem",
   cursor: "pointer",
