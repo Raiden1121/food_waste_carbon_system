@@ -56,11 +56,13 @@ const actionButtonStyle = {
   display: "inline-flex",
   alignItems: "center",
   gap: "10px",
-  background: GREEN,
-  color: TEXT_DARK,
+  background: "linear-gradient(120deg, #b3d85a, #84cc16, #4ade80, #a3e635, #b3d85a)",
+  backgroundSize: "300% 300%",
+  animation: "aurora-flow 12s ease infinite",
+  color: "#111",
   border: "none",
   borderRadius: "999px",
-  padding: "16px 32px",
+  padding: "12px 28px",
   fontWeight: 900,
   fontSize: "1.125rem",
   cursor: "pointer",
@@ -151,10 +153,10 @@ export default function CarbonSummary({ result, onAnalyseOther, onViewDetail }) 
 
       {/* Action buttons */}
       <div style={{ display: "flex", justifyContent: "flex-end", gap: "16px", flexWrap: "wrap", marginTop: "16px" }}>
-        <Button id="btn-analyse-other" type="button" onClick={onAnalyseOther} style={actionButtonStyle}>
+        <Button id="btn-analyse-other" type="button" onClick={() => setTimeout(onAnalyseOther, 250)} style={actionButtonStyle}>
           <IconSearch /> 分析其它廚餘
         </Button>
-        <Button id="btn-view-detail" type="button" onClick={onViewDetail} style={actionButtonStyle}>
+        <Button id="btn-view-detail" type="button" onClick={() => setTimeout(onViewDetail, 250)} style={actionButtonStyle}>
           查看詳細分析結果 <IconArrowRight />
         </Button>
       </div>

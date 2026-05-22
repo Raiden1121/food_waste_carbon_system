@@ -20,7 +20,7 @@ const globalStyles = `
 
   body {
     font-family: 'Noto Sans TC', 'Avenir Next', sans-serif;
-    background: #fff;
+    background: transparent;
     color: #111;
     -webkit-font-smoothing: antialiased;
   }
@@ -82,6 +82,13 @@ const globalStyles = `
       transform: translate(-50%, -50%) scale(1);
       opacity: 0;
     }
+  }
+
+  /* Aurora Flow Animation */
+  @keyframes aurora-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 `;
 
@@ -148,7 +155,7 @@ function LoadingOverlay() {
         <div style={{ display: "grid", gap: "8px" }}>
           <strong style={{ fontSize: "1.25rem", color: "#111" }}>正在分析中</strong>
           <p style={{ color: "#555", lineHeight: 1.7, fontSize: "0.95rem" }}>
-            系統正在辨識餐盤內容、估算重量，並生成偵測結果圖片。
+            系統正在辨識餐盤內容、估算重量，<br />並生成偵測結果圖片。
           </p>
         </div>
       </div>
@@ -208,11 +215,21 @@ export default function App() {
 
   /** Reset everything and scroll back to the hero section. */
   const resetToHome = () => {
+    // 1. 瞬間跳回頂端 (Hero Section 影片區塊)
+    window.scrollTo(0, 0);
+    
     setView("form");
     setResult(null);
     setError("");
     setSlideState("summary");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // 2. 稍微停留 800ms 讓使用者看到影片後，順滑捲動到表單區塊
+    setTimeout(() => {
+      const formSection = document.getElementById("upload-form-section");
+      if (formSection) {
+        formSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 800);
   };
 
   return (
@@ -226,27 +243,29 @@ export default function App() {
           <HeroSection />
 
           {/* Step 1/2/3 input form */}
-          <section
-            style={{
-              maxWidth: "1100px",
-              margin: "0 auto",
-              padding: "56px 24px 80px",
-            }}
-          >
-            <UploadForm
-              loading={loading}
-              onSubmitResult={handleSubmitResult}
-              onLoadingChange={setLoading}
-              onErrorChange={setError}
-              error={error}
-            />
+          <section id="upload-form-section" style={{ background: "#fff" }}>
+            <div
+              style={{
+                maxWidth: "1100px",
+                margin: "0 auto",
+                padding: "56px 24px 80px",
+              }}
+            >
+              <UploadForm
+                loading={loading}
+                onSubmitResult={handleSubmitResult}
+                onLoadingChange={setLoading}
+                onErrorChange={setError}
+                error={error}
+              />
+            </div>
           </section>
         </main>
       )}
 
       {/* ── VIEW B + C: Results (slide viewport) ──────────────────────────── */}
       {view === "result" && (
-        <main style={{ padding: "56px 24px 80px" }}>
+        <main style={{ padding: "56px 24px 80px", background: "#fff", minHeight: "100vh" }}>
           <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
             {/* Slide viewport */}
             <div className={`result-viewport slide-${slideState}`}>
@@ -296,12 +315,13 @@ function HeroSection() {
         loop
         playsInline
         style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
           objectFit: "cover",
-          zIndex: 0,
+          zIndex: -2,
         }}
       >
         <source src="/src/assets/Homepage_video.mp4" type="video/mp4" />
@@ -310,10 +330,13 @@ function HeroSection() {
       {/* Dark overlay */}
       <div
         style={{
-          position: "absolute",
-          inset: 0,
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
           background: "linear-gradient(to bottom, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.55) 100%)",
-          zIndex: 1,
+          zIndex: -1,
         }}
       />
 
@@ -359,7 +382,7 @@ function HeroSection() {
             fontSize: "1.125rem",
           }}
         >
-          上傳餐盤照片並輸入整盤廚餘重量，系統會使用 YOLOv11 辨識食物殘渣，
+          上傳餐盤照片並輸入整盤廚餘重量，系統會使用 YOLOv11 辨識食物殘渣，<br />
           依據資料庫中的密度係數與碳排係數推估每項食物重量與碳排量。
           <br />
           如果某個辨識食物尚未建立碳排對應，系統會保留辨識與重量結果，但不會把它計入總碳排。
@@ -382,12 +405,14 @@ function DetailView({ result, onBack }) {
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Button
           id="btn-back-to-summary"
-          onClick={onBack}
+          onClick={() => setTimeout(onBack, 250)}
           style={{
             display: "inline-flex",
             alignItems: "center",
             gap: "10px",
-            background: "#b3d85a",
+            background: "linear-gradient(120deg, #b3d85a, #84cc16, #4ade80, #a3e635, #b3d85a)",
+            backgroundSize: "300% 300%",
+            animation: "aurora-flow 12s ease infinite",
             color: "#111",
             border: "none",
             borderRadius: "999px",

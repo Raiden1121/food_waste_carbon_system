@@ -8,6 +8,7 @@ import Button from "./Button";
 // ─── Design tokens ────────────────────────────────────────────────────────────
 
 const GREEN = "#b3d85a"; // Bright green for active buttons / CTAs
+const AURORA_GRADIENT = "linear-gradient(120deg, #b3d85a, #84cc16, #4ade80, #a3e635, #b3d85a)";
 const GREEN_HOVER = "#c4e66d";
 const GRAY_BG = "#e5e7eb"; // Very light gray for inactive buttons and backgrounds
 const TEXT_DARK = "#111827"; // Dark black for typography
@@ -35,7 +36,9 @@ const pillButtonStyle = (active) => ({
   border: "none",
   borderRadius: "999px",
   padding: "16px 24px",
-  background: active ? GREEN : GRAY_BG,
+  background: active ? AURORA_GRADIENT : GRAY_BG,
+  backgroundSize: active ? "300% 300%" : "auto",
+  animation: active ? "aurora-flow 12s ease infinite" : "none",
   color: TEXT_DARK,
   fontWeight: 900,
   fontSize: "1.125rem",
@@ -76,7 +79,13 @@ const actionButtonStyle = (variant = "primary") => {
     transition: "background 0.2s",
   };
   if (variant === "primary") {
-    return { ...base, background: GREEN, color: TEXT_DARK };
+    return {
+      ...base,
+      background: AURORA_GRADIENT,
+      backgroundSize: "300% 300%",
+      animation: "aurora-flow 12s ease infinite",
+      color: TEXT_DARK,
+    };
   }
   if (variant === "danger") {
     return { ...base, background: "#fee2e2", color: TEXT_ERROR };
@@ -86,7 +95,6 @@ const actionButtonStyle = (variant = "primary") => {
 
 const inputStyle = (hasError) => ({
   width: "100%",
-  maxWidth: "400px",
   padding: "18px 24px",
   borderRadius: "999px",
   border: hasError ? `3px solid ${TEXT_ERROR}` : "none",
@@ -105,7 +113,9 @@ const submitButtonStyle = (disabled) => ({
   border: "none",
   borderRadius: "999px",
   padding: "20px 48px",
-  background: disabled ? GRAY_BG : GREEN,
+  background: disabled ? GRAY_BG : AURORA_GRADIENT,
+  backgroundSize: disabled ? "auto" : "300% 300%",
+  animation: disabled ? "none" : "aurora-flow 12s ease infinite",
   color: disabled ? TEXT_MUTED : TEXT_DARK,
   fontWeight: 900,
   fontSize: "1.5rem",
@@ -328,7 +338,7 @@ export default function UploadForm({
         {/* Step 1 (Narrow Column) */}
         <div>
           <p style={sectionTitleStyle}>Step1</p>
-          <p style={sectionSubStyle}>請選擇輸入餐盤圖片的方式。</p>
+          <p style={sectionSubStyle}>請選擇輸入餐盤圖片的方式</p>
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             <Button
               id="btn-mode-upload"
@@ -426,9 +436,10 @@ export default function UploadForm({
       {/* ── Step 3 Row ─────────────────────────────────────────────────── */}
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
+          display: "grid",
+          gridTemplateColumns: "1fr 2.5fr",
+          gap: "48px",
+          alignItems: "end",
         }}
       >
         <div>
@@ -462,15 +473,17 @@ export default function UploadForm({
           )}
         </div>
 
-        <Button
-          id="btn-submit"
-          type="submit"
-          disabled={loading}
-          style={submitButtonStyle(loading)}
-        >
-          開始分析
-          <IconArrowRight />
-        </Button>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button
+            id="btn-submit"
+            type="submit"
+            disabled={loading}
+            style={submitButtonStyle(loading)}
+          >
+            開始分析
+            <IconArrowRight />
+          </Button>
+        </div>
       </div>
 
       <canvas ref={canvasRef} style={{ display: "none" }} />
