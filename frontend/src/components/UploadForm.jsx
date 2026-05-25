@@ -241,11 +241,21 @@ export default function UploadForm({
       let stream;
       try {
         stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: "environment" } },
+          video: { 
+            facingMode: { ideal: "environment" },
+            width: { ideal: 4096 },
+            height: { ideal: 2160 }
+          },
           audio: false,
         });
       } catch {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: {
+            width: { ideal: 4096 },
+            height: { ideal: 2160 }
+          }, 
+          audio: false 
+        });
       }
       setCameraStream(stream);
     } catch {
@@ -277,9 +287,13 @@ export default function UploadForm({
       setCameraError("無法擷取相機畫面。");
       return;
     }
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    const blob = await new Promise((res) => canvas.toBlob(res, "image/jpeg", 0.92));
+    // 套用影像增強濾鏡，改善筆電鏡頭黯淡與色彩不飽和的問題
+    ctx.filter = "contrast(1.1) brightness(1.05) saturate(1.05)";
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    ctx.filter = "none";
+
+    const blob = await new Promise((res) => canvas.toBlob(res, "image/jpeg", 0.95));
     if (!blob) {
       setCameraError("拍照失敗，請再試一次。");
       return;
