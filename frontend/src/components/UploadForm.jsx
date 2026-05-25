@@ -287,11 +287,10 @@ export default function UploadForm({
       setCameraError("無法擷取相機畫面。");
       return;
     }
-
-    // 套用影像增強濾鏡，改善筆電鏡頭黯淡與色彩不飽和的問題
-    ctx.filter = "contrast(1.1) brightness(1.05) saturate(1.05)";
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    ctx.filter = "none";
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
 
     const blob = await new Promise((res) => canvas.toBlob(res, "image/jpeg", 0.95));
     if (!blob) {
@@ -498,7 +497,7 @@ export default function UploadForm({
                     playsInline
                     muted
                     onLoadedData={handleVideoReady}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", background: "#000" }}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", background: "#000", transform: "scaleX(-1)" }}
                   />
                 )}
                 {cameraPhase === "captured" && previewUrl && (
