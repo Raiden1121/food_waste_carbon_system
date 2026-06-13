@@ -31,6 +31,11 @@ food-waste-carbon-system/
 ├── backend/                    # FastAPI + YOLOv11 + SQLAlchemy 後端
 ├── database/                   # PostgreSQL 初始化 SQL
 ├── docs/                       # 系統設計與開發說明
+├── experiments/                # 實驗評估資料（YOLO vs YOLO+VLM 準確率比較）
+│   ├── test_images/            # 30 張測試用廚餘照片（含圓形餐盤）
+│   ├── experiment_results.csv  # 以物件為單位的辨識結果記錄表
+│   ├── label_categories.csv    # 廚餘類別定義對照表
+│   └── README.md               # 實驗說明文件
 ├── docker-compose.yml          # 服務編排
 ├── .env                        # 環境變數
 ├── .gitignore                  # Git 忽略規則
